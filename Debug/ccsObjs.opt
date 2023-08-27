@@ -1,0 +1,10 @@
+"./main.obj"
+"./tm4c123gh6pm_startup_ccs.obj"
+"./1.MCAL/EXTI/SRC/EXTI_Program.obj"
+"./1.MCAL/GPIO/SRC/GPIO_Program.obj"
+"./2-HAL/KeyPad/KeyPad.obj"
+"./2-HAL/LCD/LCD.obj"
+"./3-APP/Calculator/Calculator.obj"
+"./4.LIB/Delay.obj"
+"../tm4c123gh6pm.cmd"
+-llibc.a
