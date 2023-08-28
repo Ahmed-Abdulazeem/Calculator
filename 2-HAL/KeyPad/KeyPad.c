@@ -50,9 +50,10 @@ void KeyPad_vidInit(void)
     };
 
     /*Initialize KeyPad Pins */
-    GPIO_Init(Config, 8);
+    GPIO_Init(Config, 8U);
 
     /*NVIC Enable Port B interrupts*/
+
     SET_BIT(NVIC_EN0_R,1);
 
     /*Set 4 DIO INPUT and PULL UP PINS To Allow interrupts with Falling Edge*/
@@ -63,7 +64,7 @@ void KeyPad_vidInit(void)
     };
 
     /*Initialize KeyPad Pins(ROWS) TO interact with falling edge and firing interrupts*/
-    EXTI_Init(EXTI_Con, 4);
+    EXTI_Init(EXTI_Con, 4U);
 
     /*SET High on the 4 Pins*/
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN2, GPIO_PIN_HIGH);
@@ -93,7 +94,7 @@ void scanButton(u8 colIndex)
     /*switch columns options from column 1 to column 4 by colIndex*/
     switch(colIndex)
     {
-    case col_0:
+    case (u8)col_0:
     /* Set Pin 2 (Column 1) to LOW to allow falling edge on one row to be detected by one column when the key is pressed */
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN2, GPIO_PIN_LOW);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN3, GPIO_PIN_HIGH);
@@ -102,7 +103,7 @@ void scanButton(u8 colIndex)
     break;
 
     /* Set Pin 3 (Column 2) to LOW to allow falling edge on one row to be detected by one column when the key is pressed */
-    case col_1:
+    case (u8)col_1:
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN2, GPIO_PIN_HIGH);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN3, GPIO_PIN_LOW);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN4, GPIO_PIN_HIGH);
@@ -110,7 +111,7 @@ void scanButton(u8 colIndex)
     break;
 
     /* Set Pin 4 (Column 3) to LOW to allow falling edge on one row to be detected by one column when the key is pressed */
-    case col_2:
+    case (u8)col_2:
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN2, GPIO_PIN_HIGH);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN3, GPIO_PIN_HIGH);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN4, GPIO_PIN_LOW);
@@ -118,7 +119,7 @@ void scanButton(u8 colIndex)
     break;
 
     /* Set Pin 5 (Column 4) to LOW to allow falling edge on one row to be detected by one column when the key is pressed */
-    case col_3:
+    case (u8)col_3:
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN2, GPIO_PIN_HIGH);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN3, GPIO_PIN_HIGH);
     GPIO_SetPinValue(GPIO_PORTA,GPIO_PIN4, GPIO_PIN_HIGH);

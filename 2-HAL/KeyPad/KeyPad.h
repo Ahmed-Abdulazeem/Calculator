@@ -21,7 +21,6 @@
 #include "../../4.LIB/Platform_Types.h"
 #include "../../4.LIB/Std_Types.h"
 #include "../../4.LIB/TM4C123xx.h"
-#include "../../4.LIB/hw_gpio.h"
 #include "../../4.LIB/delay.h"
 #include "../../1.MCAL/GPIO/INC/GPIO_Interface.h"
 #include "../../1.MCAL/EXTI/INC/EXTI_Interface.h"
@@ -84,8 +83,7 @@ void KeyPad_vidInit(void);
  * \Parameters (out): None
  * \Return value:   : None
  ***************************************************************************************************************************/
-void scanButton(u8 col);
-
+void scanButton(u8 colIndex);
 /**********************************************************************************************************************
  *   CallBack Functions
  *********************************************************************************************************************/

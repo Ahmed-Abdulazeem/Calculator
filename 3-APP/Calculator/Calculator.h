@@ -21,7 +21,6 @@
 #include "../../4.LIB/Platform_Types.h"
 #include "../../4.LIB/Std_Types.h"
 #include "../../4.LIB/TM4C123xx.h"
-#include "../../4.LIB/hw_gpio.h"
 #include "../../4.LIB/delay.h"
 #include "../../1.MCAL/GPIO/INC/GPIO_Interface.h"
 #include "../../1.MCAL/EXTI/INC/EXTI_Interface.h"
@@ -68,7 +67,7 @@ f32  equationParse(void);
  * \Parameters (out): None
  * \Return value:   : the result of equation after parsing
  ***************************************************************************************************************************/
-f32  calcOperation(f32 num1,f32 op,f32 num2);
+f32  calcOperation(f32 Value1,f32 op,f32 Value2);
 
 /***************************************************************************************************************************
  * \Syntax          : void removeElement(u8 index)

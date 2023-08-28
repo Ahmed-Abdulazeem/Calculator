@@ -27,7 +27,7 @@
 #include "LCD.h"
 
 /*array of GPIO_RegDef_t and each element represents a GPIO base address*/
-static GPIO_RegDef_t* GPIO_Arr[6]={GPIOA,GPIOB,GPIOC,GPIOD,GPIOE,GPIOF};
+static GPIO_RegDef_t * GPIO_Arr[6]={(GPIO_RegDef_t *)GPIOA, (GPIO_RegDef_t *)GPIOB, (GPIO_RegDef_t *)GPIOC, (GPIO_RegDef_t *)GPIOD,(GPIO_RegDef_t *)GPIOE,(GPIO_RegDef_t *)GPIOF};
 
 /*To count number of printing to go new line after first Line is completed*/
 u8 counter;
@@ -60,22 +60,22 @@ void LCD_vidInit(void)
     };
 
     /*Initialize KeyPad Pins */
-    GPIO_Init(Config, 7);
+    GPIO_Init(Config, 7U);
 
-    delay_ms(40);
-    CLR_BIT(GPIO_Arr[LCD_DATA_PORT]->DATA[4],LCD_RW);
+    delay_ms(40U);
+    CLR_BIT(GPIO_Arr[LCD_DATA_PORT]->DATA[4U],LCD_RW);
 
-    LCD_vidSendNibbleCMD(0x2); /*2 Line, 5*7 matrix in 4-bit mode*/
-    LCD_vidSendNibbleCMD(0x8);
+    LCD_vidSendNibbleCMD(0x2U); /*2 Line, 5*7 matrix in 4-bit mode*/
+    LCD_vidSendNibbleCMD(0x8U);
 
-    LCD_vidSendNibbleCMD(0x0); /*Display on cursor off*/
-    LCD_vidSendNibbleCMD(0xF); /*Increment cursor */
+    LCD_vidSendNibbleCMD(0x0U); /*Display on cursor off*/
+    LCD_vidSendNibbleCMD(0xFU); /*Increment cursor */
 
-    LCD_vidSendNibbleCMD(0x0);
-    LCD_vidSendNibbleCMD(0x6);
+    LCD_vidSendNibbleCMD(0x0U);
+    LCD_vidSendNibbleCMD(0x6U);
 
-    LCD_vidSendNibbleCMD(0x0);/*clear the lcd*/
-    LCD_vidSendNibbleCMD(0x1);
+    LCD_vidSendNibbleCMD(0x0U);/*clear the lcd*/
+    LCD_vidSendNibbleCMD(0x1U);
 }
 
 
@@ -92,13 +92,13 @@ void LCD_vidSendNibbleCMD(u8 u8NibbleCopy)
 {
 
     /*clear the RS pin and set the EN pin to enter command mode*/
-    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[8],LCD_RS);
-    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2],LCD_EN);
+    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[8U],LCD_RS);
+    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2U],LCD_EN);
     /*send the nibble to the LCD through data pins*/
-    INSERT_VALUE(GPIO_Arr[LCD_DATA_PORT]->DATA[15],0,4,u8NibbleCopy);
-    delay_ms(1);
+    INSERT_VALUE(GPIO_Arr[LCD_DATA_PORT]->DATA[15U],0,4,u8NibbleCopy);
+    delay_ms(1U);
 
-    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2],LCD_EN);
+    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2U],LCD_EN);
 }
 
 /***************************************************************************************************************************
@@ -113,13 +113,13 @@ void LCD_vidSendNibbleData(u8 u8NibbleCopy)
 {
 
     /*clear the RS pin and set the EN pin to enter command mode*/
-    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[8],LCD_RS);
-    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2],LCD_EN);
+    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[8U],LCD_RS);
+    SET_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2U],LCD_EN);
     /*send the nibble to the LCD through data pins*/
-    INSERT_VALUE(GPIO_Arr[LCD_DATA_PORT]->DATA[15],0,4,u8NibbleCopy);
-    delay_ms(1);
+    INSERT_VALUE(GPIO_Arr[LCD_DATA_PORT]->DATA[15U],0U,4U,u8NibbleCopy);
+    delay_ms(1U);
 
-    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2],LCD_EN);
+    CLR_BIT(GPIO_Arr[LCD_CONTROL_PORT]->DATA[2U],LCD_EN);
 
 }
 
@@ -142,9 +142,9 @@ void LCD_vidWriteChar (u8 u8DataCopy)
     counter++;
 
     /*if counter = 16 (row 1 full) go to new line*/
-    if(counter >= 16){
-        LCD_move_cusor(1,0);
-        counter=0;
+    if(counter >= 16U){
+        LCD_move_cusor(1U,0U);
+        counter=0U;
 
     }
 }
@@ -156,20 +156,20 @@ void LCD_vidWriteChar (u8 u8DataCopy)
  * \Parameters      : (u8 pu8StringCopy) the string that will be printed
  * \Return value:   : None
  ***************************************************************************************************************************/
-void LCD_vidWriteString (u8* pu8StringCopy)
+void LCD_vidWriteString (const u8* pu8StringCopy)
 {
     u8 i;
     /*loop into string till reach null*/
-    for(i=0;pu8StringCopy[i];i++)
+    for (i = 0U; pu8StringCopy[i] != 0U; i++)
     {
         /*if counter = 16 (row 1 full) go to new line*/
-        if(i==16)
+        if(i==16U)
         {
-            //Go to New Line
-            LCD_move_cusor(1,0);
+            /* Go to New Line */
+            LCD_move_cusor(1U,0U);
         }
         /*print the each single character individually*/
-        LCD_vidWriteChar(pu8StringCopy[i]);
+        LCD_vidWriteChar((u8)pu8StringCopy[i]);
     }
 }
 
@@ -186,18 +186,22 @@ void LCD_move_cusor(u8 colu,u8 row){
     /*initialize a variable to store the position*/
     u8 local_positon ;
     /*check if the column is the first column*/
-    if(colu==0){
+    if(colu == 0U){
         /*add the row number to the address of the first row in the first column*/
-        local_positon=0x80+row;
+        local_positon=0x80U+row;
         /*check if the column is the second column*/
-    }else if(colu==1){
+    }else if(colu == 1U){
         /*add the row number to the address of the first row in the second column*/
-        local_positon=row+0xC0;
+        local_positon=row+0xC0U;
+    }
+    else
+    {
+
     }
     /*send the position of the cursor*/
     LCD_vidSendNibbleCMD(local_positon>>4);
     LCD_vidSendNibbleCMD(local_positon);
-    delay_ms(5);
+    delay_ms(5U);
 
 
 }
@@ -209,9 +213,9 @@ void LCD_move_cusor(u8 colu,u8 row){
  * \Return value:   : None
  ***************************************************************************************************************************/
 void LCD_clear(void){
-    LCD_vidSendNibbleCMD(0x0);
-    LCD_vidSendNibbleCMD(0x1);
-    counter=0;
+    LCD_vidSendNibbleCMD(0x0U);
+    LCD_vidSendNibbleCMD(0x1U);
+    counter=0U;
 }
 
 /***************************************************************************************************************************
@@ -222,71 +226,73 @@ void LCD_clear(void){
  * \Parameters      : (u16 num) the number that will be printed
  * \Return value:   : None
  ***************************************************************************************************************************/
-void LCD_vidWriteNumber (f32 num ){
+void LCD_vidWriteNumber (f32 Value ){
 
     u32 intNum;         /* To Carry the integer part in variable num */
     u8 arr[5]={0};      /* arr is an array To Carry the integer part as a single digits */
     u8 fraction[5]={0}; /* fraction is an array To Carry the fraction part as a single digits */
-    u8 i=5;             /* i represents index to start from last element */
+    u8 iterator=5U;             /* i represents index to start from last element */
 
     /*Check If num is Neg */
-    if(num < 0)
+    if(Value < 0.0f)
     {
 
-        num = -1*num;           /*Convert it to Positive  */
-        LCD_vidWriteChar('-');  /*Print negative symbol - */
+        Value = (f32)(-1.0*Value);      /*Convert it to Positive  */
+        LCD_vidWriteChar('-');          /*Print negative symbol - */
     }
 
-    intNum = (u32)num;          /*cast num to integer and store integer part in intNum*/
+    intNum = (u32)Value;          /*cast num to integer and store integer part in intNum*/
 
     /*check in num = 0 print it*/
-    if(num==0){
+    if(Value == 0.0f){
+
         LCD_vidWriteChar('0');
+
     }else{
 
         /*while intNum not equal 0 that means there is a value to be truncated and stored in the array to b print*/
-        while(intNum!=0)
+        while(intNum!=0U)
         {
-            i--;
-            arr[i]=intNum%10;   /*store least digit in last index if num = 12345
+            iterator--;
+            arr[iterator]=(u8)(intNum%10U);   /*store least digit in last index if num = 12345
                                     it stores as {1,2,3,4,5};
                                     start from last digit which is 5 to 1
                                  */
 
-            intNum=intNum/10;   /*Remove taken digit*/
+            intNum=((u32)intNum/10U);   /*Remove taken digit*/
         }
 
-        for(;i<5;i++){
+        for(iterator=iterator;iterator<5U;iterator++){
 
             /* i now has (Left digit->most digit) start printing from it till last digit (right digit ->least digit)  */
-            LCD_vidWriteChar(arr[i]+'0');
+            LCD_vidWriteChar(arr[iterator]+(u8)'0');
 
         }
 
-        i=5;
-        intNum = (u32)num;
+        iterator=5U;
+        intNum = (u32)Value;
         /*Check if there is a fraction(3 digits right . ) then print it*/
-        if(((num - intNum)*1000) > 1)
+        if(((Value - intNum)*1000U) > 1)
         {
             /* First print dot */
             LCD_vidWriteChar('.');
 
-            intNum = (float)(num - intNum)*1000.0; /* store 3 digit of fraction in intNum to print them */
-
+            intNum = (f32)((f32)Value - (f32)intNum)*1000.0; /* store 3 digit of fraction in intNum to print them */
             /*while intNum not equal 0 that means there is a value to be truncated and stored in the array to b print*/
-            while(intNum!=0){
-                i--;
-                fraction[i]=intNum%10;/*store least digit in last index if num = 12345
-                                        it stores as {1,2,3,4,5};
-                                        start from last digit which is 5 to 1
-                                      */
 
-                intNum=intNum/10;     /*Remove taken digit*/
+            while(intNum!=0U){
+                iterator--;
+                fraction[iterator]=(u8)(intNum%10U);/*store least digit in last index if num = 12345
+                                                    it stores as {1,2,3,4,5};
+                                                    start from last digit which is 5 to 1
+                                                      */
+
+                intNum=((u32)intNum/10U);     /*Remove taken digit*/
             }
 
-            for(;i<5;i++){
+            for(iterator=iterator ; iterator<5U ; iterator++){
                 /* i now has (Left digit->most digit) start printing from it till last digit (right digit ->least digit)  */
-                LCD_vidWriteChar(fraction[i]+'0');
+                LCD_vidWriteChar((fraction[iterator]+(u8)'0'));
             }
 
         }

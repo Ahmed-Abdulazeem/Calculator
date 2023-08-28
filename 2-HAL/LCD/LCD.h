@@ -64,7 +64,7 @@ void LCD_vidSendNibbleData(u8 u8CmdCopy);
  * \Parameters      : u8 u8NibbleCopy
  * \Return value:   : None
  ***************************************************************************************************************************/
-void LCD_vidSendNibbleCMD(u8 u8CmdCopy);
+void LCD_vidSendNibbleCMD(u8 u8NibbleCopy);
 
 /***************************************************************************************************************************
  * \Syntax          :void LCD_vidWriteChar (u8 u8DataCopy)
@@ -82,7 +82,7 @@ void LCD_vidWriteChar (u8 u8DataCopy);
  * \Parameters      : (u8 pu8StringCopy) the string that will be printed
  * \Return value:   : None
  ***************************************************************************************************************************/
-void LCD_vidWriteString (u8* pu8StringCopy);
+void LCD_vidWriteString (const u8* pu8StringCopy);
 
 /***************************************************************************************************************************
  * \Syntax          : void LCD_move_cusor(u8 colu,u8 row)
@@ -111,5 +111,5 @@ void LCD_clear(void);
  * \Parameters      : (u16 num) the number that will be printed
  * \Return value:   : None
  ***************************************************************************************************************************/
-void LCD_vidWriteNumber (f32 num );
+void LCD_vidWriteNumber (f32 Value );
 #endif /* 2_HAL_LCD_LCD_H_ */
